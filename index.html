@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Designer Interface</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+
+    <style>
+        /* Dark theme */
+        body {
+            background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/8710.jpg');
+            background-size: cover;
+            color: #fff;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 100px;
+            padding-bottom: 50px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #fff;
+            background-color: transparent;
+            color: #fff;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom-color: #000;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #6B46C1;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Helvetica Neue', sans-serif;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background-color: #553C9A;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-6 text-center">Sticker Designer Interface</h1>
+        <div>
+            <input type="text" id="product-code" name="product-code" placeholder="Product Code" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="pieces" name="pieces" placeholder="Number Of Pieces" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="best-before" name="best-before" placeholder="Best Before (e.g., 12 months from manufacturing date)" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="mfd-date" name="mfd-date" placeholder="MFD Date" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="weight" name="weight" placeholder="Net Weight" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="mrp" name="mrp" placeholder="MRP" class="custom-input">
+        </div>
+        <div>
+            <input type="text" id="contact" name="contact" placeholder="Contact" class="custom-input">
+        </div>
+        <button id="generate-button" class="btn">Generate Sticker</button>
+        <button id="save-pdf-button" class="btn">Save as PDF</button>
+    </div>
+
+    <div class="footer">
+        <span>Developed by <a href="https://www.instagram.com/an.kithh" target="_blank" rel="noopener noreferrer">Ankith SN</a></span>
+    </div>
+
+    <script>
+          document.getElementById('save-pdf-button').addEventListener('click', function() {
+            var productCode = document.getElementById('product-code').value;
+            var pieces = document.getElementById('pieces').value;
+            var bestBefore = document.getElementById('best-before').value;
+            var mfdDate = document.getElementById('mfd-date').value;
+            var weight = document.getElementById('weight').value;
+            var mrp = document.getElementById('mrp').value;
+            var contact = document.getElementById('contact').value;
+
+            var stickerContent = `
+                Product Code: ${productCode}\n
+                Pieces: ${pieces}\n
+                Best Before: ${bestBefore}\n
+                MFD Date: ${mfdDate}\n
+                Weight: ${weight}\n
+                MRP: ${mrp}\n
+                Contact: ${contact}`;
+
+            var doc = new jsPDF();
+            doc.text(stickerContent, 10, 10);
+            doc.save('sticker.pdf');
+        });
+        document.getElementById('generate-button').addEventListener('click', function() {
+            var productCode = document.getElementById('product-code').value;
+            var pieces = document.getElementById('pieces').value;
+            var bestBefore = document.getElementById('best-before').value;
+            var mfdDate = document.getElementById('mfd-date').value;
+            var weight = document.getElementById('weight').value;
+            var mrp = document.getElementById('mrp').value;
+            var contact = document.getElementById('contact').value;
+
+            var stickerContent = `
+                Product Code: ${productCode}<br>
+                Pieces: ${pieces}<br>
+                Best Before: ${bestBefore}<br>
+                MFD Date: ${mfdDate}<br>
+                Weight: ${weight}<br>
+                MRP: ${mrp}<br>
+                Contact: ${contact}
+            `;
+
+            var win = window.open('', '_blank');
+            win.document.write('<html><head><title>Sticker</title></head><body>');
+            win.document.write(stickerContent);
+            win.document.write('</body></html>');
+            win.document.close();
+
+            win.focus();
+            win.print();
+        });
+
+      
+    </script>
+</body>
+</html>
