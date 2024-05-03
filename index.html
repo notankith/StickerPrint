@@ -6,6 +6,9 @@
     <title>Sticker Designer Interface</title>
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <!-- Include jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
 
     <style>
@@ -102,7 +105,7 @@
             <input type="text" id="contact" name="contact" placeholder="Contact" class="custom-input">
         </div>
         <button id="generate-button" class="btn">Generate Sticker</button>
-        <button id="save-pdf-button" class="btn">Save as PDF</button>
+        <button id="save-jpg-button" class="btn">Save as JPG</button>
     </div>
 
     <div class="footer">
@@ -110,28 +113,20 @@
     </div>
 
     <script>
-          document.getElementById('save-pdf-button').addEventListener('click', function() {
-            var productCode = document.getElementById('product-code').value;
-            var pieces = document.getElementById('pieces').value;
-            var bestBefore = document.getElementById('best-before').value;
-            var mfdDate = document.getElementById('mfd-date').value;
-            var weight = document.getElementById('weight').value;
-            var mrp = document.getElementById('mrp').value;
-            var contact = document.getElementById('contact').value;
+        document.getElementById('save-jpg-button').addEventListener('click', function() {
+            var container = document.querySelector('.container');
 
-            var stickerContent = `
-                Product Code: ${productCode}\n
-                Pieces: ${pieces}\n
-                Best Before: ${bestBefore}\n
-                MFD Date: ${mfdDate}\n
-                Weight: ${weight}\n
-                MRP: ${mrp}\n
-                Contact: ${contact}`;
+            html2canvas(container).then(function(canvas) {
+                var imgData = canvas.toDataURL('image/jpeg', 1.0);
+                var img = new Image();
+                img.src = imgData;
 
-            var doc = new jsPDF();
-            doc.text(stickerContent, 10, 10);
-            doc.save('sticker.pdf');
+                var doc = new jsPDF();
+                doc.addImage(img, 'JPEG', 0, 0, 210, 297); // Adjust size as needed
+                doc.save('sticker.jpg');
+            });
         });
+
         document.getElementById('generate-button').addEventListener('click', function() {
             var productCode = document.getElementById('product-code').value;
             var pieces = document.getElementById('pieces').value;
@@ -160,8 +155,6 @@
             win.focus();
             win.print();
         });
-
-      
     </script>
 </body>
 </html>
